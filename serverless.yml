@@ -1,0 +1,44 @@
+service: my-project
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+
+functions:
+  create:
+    handler: index.createTest
+    events:
+      - http:
+          path: create
+          method: post
+          cors: true
+  read:
+    handler: index.getTests
+    events:
+      - http:
+          path: read
+          method: get
+          cors: true
+  readById:
+    handler: index.getTestById
+    events:
+      - http:
+          path: read/{id}
+          method: get
+          cors: true
+  update:
+    handler: index.updateTest
+    events:
+      - http:
+          path: update/{id}
+          method: put
+          cors: true
+  delete:
+    handler: index.deleteTest
+    events:
+      - http:
+          path: delete/{id}
+          method: delete
+          cors: true
+    
