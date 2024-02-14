@@ -1,21 +1,21 @@
 const Sequelize = require('sequelize');
-require('dotenv').config();
+const {env} = require('../env');
 
 const sequelize = new Sequelize(
-  'database1',
-  'postgres',
-  'Rudhram1234',
+  env.DATABASE_NAME,
+  env.DATABASE_USER,
+  env.DATABASE_PASSWORD,
   {
-    host: 'database1.cjgg0c8y6wzj.us-east-1.rds.amazonaws.com',
+    host: env.DATABASE_HOST,
     port: 5432,
     dialect: 'postgres',
     logging: console.log, 
-    dialectOptions: { //< Add this
-      ssl: {
-         require: true,
-         rejectUnauthorized: false
-      }
-  }
+  //   dialectOptions: { 
+  //     ssl: {
+  //        require: true,
+  //        rejectUnauthorized: false
+  //     }
+  // }
  }
 );
 
