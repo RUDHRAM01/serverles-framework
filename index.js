@@ -3,108 +3,212 @@ const { connectToDatabase } = require('./db/db');
 connectToDatabase();
 
 
-const createTest = async (req, res) => {
+const createTest = async (event) => {
   try {
-        const name = req.name;
-        const password = req.password;
+        const name = event.body.name;
+        const password = event.body.password;
         const test = await Test.create({ name, password });
-      return {
-        message: 'Test created successfully',
-        test: test
+        return {
+          headers: {
+            "Access-Control-Allow-Headers":
+            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+            "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+          statusCode: 200,
+          body: JSON.stringify(test)
         }
     } catch (error) {
       return {
-        message: error.message
+        headers: {
+          "Access-Control-Allow-Headers":
+          "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        statusCode: 500,
+        body: JSON.stringify(error.message)
       }
     }
 };
 
 
-const getTests = async (req, res) => {
+const getTests = async (event) => {
     try {
         const tests = await Test.findAll();
-      return {
-        message: tests
+        return {
+          headers: {
+            "Access-Control-Allow-Headers":
+            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+            "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+          statusCode: 200,
+          body: JSON.stringify(tests)
         }
     } catch (error) {
       return {
-        message: error.message
+        headers: {
+          "Access-Control-Allow-Headers":
+          "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        statusCode: 500,
+        body: JSON.stringify(error.message)
       }
     }
 };
 
 
-const getTestById = async (req, res) => {
+const getTestById = async (event) => {
+  
   try {
-        const  id  = req.id;
+        const  id  = event.pathParameters.id;
         const test = await Test.findOne({
             where: { id: id }
         });
         if (test) {
           return {
-            message: test
+            headers: {
+              "Access-Control-Allow-Headers":
+              "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+              "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+            statusCode: 200,
+            body: JSON.stringify(test)
           }
         } else {
           return {
-            message: 'Test not found'
+            headers: {
+              "Access-Control-Allow-Headers":
+              "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+              "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+            statusCode: 400,
+            body: JSON.stringify('test not found')
           }
         }
     }
     catch (error) {
       return {
-        message: error.message
+        headers: {
+          "Access-Control-Allow-Headers":
+          "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        statusCode: 500,
+        body: JSON.stringify(error.message)
       }
     }
 }
 
 
-const updateTest = async (req, res) => {
+const updateTest = async (event) => {
     try {
-      const  id  = req.id;
-      const name = req.name;
-      const password = req.password;
+      const  id  = event.pathParameters.id;
+      const name = event.body.name;
+      const password = event.body.password;
         const test = await Test.findOne({
             where: { id: id }
         });
         if (test) {
             await test.update({ name, password });
-          return {
-            message: 'Test updated successfully',
+            return {
+              headers: {
+                "Access-Control-Allow-Headers":
+                "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+                "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+              },
+              statusCode: 200,
+              body: JSON.stringify('test updated successfully')
             }
         } else {
           return {
-            message: 'Test not found'
+            headers: {
+              "Access-Control-Allow-Headers":
+              "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+              "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+            statusCode: 400,
+            body: JSON.stringify('test not found')
           }
         }
     }
     catch (error) {
       return {
-        message: error.message
+        headers: {
+          "Access-Control-Allow-Headers":
+          "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        statusCode: 500,
+        body: JSON.stringify(error.message)
       }
     }
 }
 
 
-const deleteTest = async (req, res) => {
+const deleteTest = async (event) => {
     try {
-        const id  = req.id;
+      const  id  = event.pathParameters.id;
         const test = await Test.findOne({
             where: { id: id }
         });
         if (test) {
             await test.destroy();
             return {
-                message: 'Test deleted successfully'
-              };
+              headers: {
+                "Access-Control-Allow-Headers":
+                "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+                "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json",
+              },
+              statusCode: 200,
+              body: JSON.stringify('test deleted successfully')
+            }
         } else {
           return {
-            message: 'Test not found'
+            headers: {
+              "Access-Control-Allow-Headers":
+              "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+              "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+            },
+            statusCode: 400,
+            body: JSON.stringify('test not found')
           }
         }
     }
     catch (error) {
       return {
-        message: error.message
+        headers: {
+          "Access-Control-Allow-Headers":
+          "Content-Type,X-Amz-Date,Authorization,X-Api-Key,Cache-Control,X-Requested-With",
+          "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json",
+        },
+        statusCode: 500,
+        body: JSON.stringify(error.message)
       }
     }
 }
