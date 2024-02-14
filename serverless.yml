@@ -8,6 +8,7 @@ provider:
 functions:
   create:
     handler: index.createTest
+    timeout: 25
     events:
       - http:
           path: create
@@ -15,6 +16,7 @@ functions:
           cors: true
   read:
     handler: index.getTests
+    timeout: 25
     events:
       - http:
           path: read
@@ -22,6 +24,7 @@ functions:
           cors: true
   readById:
     handler: index.getTestById
+    timeout: 25
     events:
       - http:
           path: read/{id}
@@ -29,6 +32,7 @@ functions:
           cors: true
   update:
     handler: index.updateTest
+    timeout: 25
     events:
       - http:
           path: update/{id}
@@ -36,9 +40,11 @@ functions:
           cors: true
   delete:
     handler: index.deleteTest
+    timeout: 25
     events:
       - http:
           path: delete/{id}
           method: delete
           cors: true
-    
+plugins:
+  - serverless-offline
